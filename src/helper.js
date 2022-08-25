@@ -35,8 +35,7 @@ exports.validHubspotTrackingId = options =>
   options.trackingId.trim() !== ``
 
 exports.validGTrackingId = options =>
-  options.trackingId &&
-  options.trackingId.trim() !== ``
+  options.trackingIds.length > 0
 
 exports.getCookie = name => {
   var v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');

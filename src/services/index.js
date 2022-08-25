@@ -55,7 +55,11 @@ const {
   initializeHubspot
 } = require('./hubspot')
 
-const { addGoogleTag, initializeGoogleTag } = require('./google-tag');
+const {
+  addGoogleTag,
+  initializeGoogleTag,
+  trackGoogleTag
+} = require('./google-tag');
 
 exports.initializeAndTrackGoogleAnalytics = (options, location) => {
   if (
@@ -171,7 +175,7 @@ exports.initializeHubspot = (options) => {
   }
 }
 
-exports.initializeGoogleTag = (options) => {
+exports.initializeGoogleTag = (options, location) => {
   if (
     getCookie(options.cookieName) === `true` &&
     validGTrackingId(options)
@@ -179,6 +183,7 @@ exports.initializeGoogleTag = (options) => {
     addGoogleTag(options).then((status) => {
       if (status) {
         initializeGoogleTag(options)
+        trackGoogleTag(options, location)
       }
     })
   }

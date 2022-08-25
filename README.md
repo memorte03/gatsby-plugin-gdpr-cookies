@@ -47,11 +47,15 @@ module.exports = {
         },
         linkedin: {
           trackingId: 'YOUR_LINKEDIN_TRACKING_ID', // leave empty if you want to disable the tracker
-          cookieName: 'gatsby-gdpr-linked-in', // default
+          cookieName: 'gatsby-gdpr-linkedin', // default
         },
         hubspot: {
           trackingId: 'YOUR_HUBSPOT_TRACKING_ID', // leave empty if you want to disable the tracker
           cookieName: 'gatsby-gdpr-hubspot', // default
+        },
+        googleTag: {
+            trackingIds: [],
+            cookieName: 'gatsby-gpdr-google-tag'
         },
         // defines the environments where the tracking should be available  - default is ["production"]
         environments: ['production', 'development']

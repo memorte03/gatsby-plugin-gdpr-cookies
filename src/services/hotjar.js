@@ -1,7 +1,4 @@
-const {
-  validHotjarId,
-  getCookie
-} = require('../helper')
+const { validHotjarId, getCookie } = require(`../helper`)
 
 exports.addHotjar = (options) => {
   return new Promise((resolve, reject) => {
@@ -21,7 +18,7 @@ exports.addHotjar = (options) => {
     window.gatsbyPluginGDPRCookiesHotjarAdded = true
 
     resolve(true)
-  });
+  })
 }
 
 exports.initializeHotjar = (options) => {

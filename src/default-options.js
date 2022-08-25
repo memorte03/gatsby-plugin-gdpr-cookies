@@ -3,32 +3,32 @@ export const defaultOptions = {
   googleAnalytics: {
     cookieName: `gatsby-gdpr-google-analytics`,
     anonymize: true,
-    allowAdFeatures: false
+    allowAdFeatures: false,
   },
   googleTagManager: {
     cookieName: `gatsby-gdpr-google-tagmanager`,
     dataLayerName: `dataLayer`,
-    routeChangeEvent: `gatsbyRouteChange`
+    routeChangeEvent: `gatsbyRouteChange`,
   },
   facebookPixel: {
-    cookieName: `gatsby-gdpr-facebook-pixel`
+    cookieName: `gatsby-gdpr-facebook-pixel`,
   },
   tikTokPixel: {
-    cookieName: `gatsby-gdpr-tiktok-pixel`
+    cookieName: `gatsby-gdpr-tiktok-pixel`,
   },
   hotjar: {
-    cookieName: `gatsby-gdpr-hotjar`
+    cookieName: `gatsby-gdpr-hotjar`,
   },
   chatwoot: {
-    cookieName: 'gatsby-gdpr-chatwoot'
+    cookieName: `gatsby-gdpr-chatwoot`,
   },
   linkedin: {
-    cookieName: 'gatsby-gdpr-linkedin'
+    cookieName: `gatsby-gdpr-linkedin`,
   },
   hubspot: {
-    cookieName: 'gatsby-gpdr-hubspot'
+    cookieName: `gatsby-gpdr-hubspot`,
   },
   googleTag: {
-    cookieName: 'gatsby-gpdr-google-tag'
-  }
+    cookieName: `gatsby-gpdr-google-tag`,
+  },
 }

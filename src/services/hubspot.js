@@ -1,17 +1,14 @@
-const {
-  validHubspotTrackingId,
-  getCookie
-} = require('../helper')
+const { validHubspotTrackingId, getCookie } = require(`../helper`)
 
 exports.addHubspot = (options) => {
   return new Promise((resolve, reject) => {
     if (window.gatsbyPluginGDPRCookiesHubspotAdded) return resolve(true)
 
-    const head = document.getElementsByTagName('head')[0]
+    const head = document.getElementsByTagName(`head`)[0]
     const script = document.createElement(`script`)
     script.type = `text/javascript`
-    script.id = 'hs-script-loader'
-    script.key = 'gatsby-plugin-hubspot'
+    script.id = `hs-script-loader`
+    script.key = `gatsby-plugin-hubspot`
     script.async = true
     script.defer = true
     script.onload = () => {
@@ -20,7 +17,7 @@ exports.addHubspot = (options) => {
     }
     script.src = `//js.hs-scripts.com/${options.trackingId}.js`
 
-    head.appendChild(script);
+    head.appendChild(script)
   })
 }
 
@@ -31,9 +28,12 @@ exports.initializeHubspot = (options) => {
     validHubspotTrackingId(options)
   ) {
     // (function(){
-    var _hsq = window._hsq = window._hsq || [];
-    _hsq.push(['setPath', window.location.pathname + window.location.search + window.location.hash]);
-    `${
+    const _hsq = (window._hsq = window._hsq || [])
+    _hsq.push([
+      `setPath`,
+      window.location.pathname + window.location.search + window.location.hash,
+    ])
+    ;`${
       options.respectDNT
         ? `
                   if (window.doNotTrack || navigator.doNotTrack || navigator.msDoNotTrack || 'msTrackingProtectionEnabled' in window.external) {

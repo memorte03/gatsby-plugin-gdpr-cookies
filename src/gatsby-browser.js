@@ -1,5 +1,5 @@
 import { defaultOptions } from "./default-options"
-import { initializeAndTrack } from './index'
+import { initializeAndTrack } from "./index"
 import merge from "lodash/merge"
 
 // init

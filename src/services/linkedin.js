@@ -1,7 +1,4 @@
-const {
-  validLinkedinTrackingId,
-  getCookie
-} = require('../helper')
+const { validLinkedinTrackingId, getCookie } = require(`../helper`)
 
 exports.addLinkedin = (options) => {
   return new Promise((resolve, reject) => {
@@ -10,8 +7,8 @@ exports.addLinkedin = (options) => {
     /* eslint-disable */
       // LINKED IN SPECIFIC CODE HERE
       _linkedin_partner_id = options.trackingId;
-      window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || []; 
-      window._linkedin_data_partner_ids.push(_linkedin_partner_id); 
+      window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
+      window._linkedin_data_partner_ids.push(_linkedin_partner_id);
     /* eslint-enable */
 
     window.gatsbyPluginGDPRCookiesLinkedinAdded = true
@@ -27,12 +24,12 @@ exports.initializeLinkedin = (options) => {
     validLinkedinTrackingId(options)
   ) {
     // (function(){
-      var s = document.getElementsByTagName("script")[0]; 
-      var b = document.createElement("script"); 
-      b.type = "text/javascript";
-      b.async = true; 
-      b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js"; 
-      s.parentNode.insertBefore(b, s);
+    const s = document.getElementsByTagName(`script`)[0]
+    const b = document.createElement(`script`)
+    b.type = `text/javascript`
+    b.async = true
+    b.src = `https://snap.licdn.com/li.lms-analytics/insight.min.js`
+    s.parentNode.insertBefore(b, s)
     // })();
 
     window.gatsbyPluginGDPRCookiesLinkedinInitialized = true

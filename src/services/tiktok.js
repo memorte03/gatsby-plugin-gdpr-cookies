@@ -1,7 +1,4 @@
-const {
-  validTikTokPixelId,
-  getCookie
-} = require('../helper')
+const { validTikTokPixelId, getCookie } = require(`../helper`)
 
 exports.addTikTokPixel = () => {
   return new Promise((resolve, reject) => {
@@ -17,7 +14,7 @@ exports.addTikTokPixel = () => {
     window.gatsbyPluginGDPRCookiesTikTokPixelAdded = true
 
     resolve(true)
-  });
+  })
 }
 
 exports.initializeTikTokPixel = (options) => {
@@ -36,7 +33,7 @@ exports.trackTikTokPixel = (options) => {
   if (
     getCookie(options.cookieName) === `true` &&
     validTikTokPixelId(options) &&
-    typeof window.fbq === "function"
+    typeof window.fbq === `function`
   ) {
     window.fbq(`track`, `PageView`)
     window.ttq.page()

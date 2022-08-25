@@ -1,12 +1,10 @@
 const { validGTrackingId, getCookie } = require(`../helper`)
 import { Minimatch } from "minimatch"
 
-
 exports.addGoogleTag = (options) => {
   return new Promise((resolve, reject) => {
     if (window.gatsbyPluginGDPRCookiesGoogleTagAdded) return resolve(true)
 
-    const gtagConfig = options.gtagConfig || {}
     const pluginConfig = options.pluginConfig || {}
 
     const origin = pluginConfig.origin || `https://www.googletagmanager.com`
@@ -23,26 +21,56 @@ exports.addGoogleTag = (options) => {
     link2.key = `dns-prefetch-google-gtag`
     link2.href = origin
 
+    const firstTrackingId =
+      options.trackingIds && options.trackingIds.length
+        ? options.trackingIds[0]
+        : ``
+
+    const script = document.createElement(`script`)
+    script.key = `gatsby-plugin-google-gtag`
+    script.async = true
+
+    script.onload = () => {
+      window.gatsbyPluginGDPRCookiesGoogleTagAdded = true
+      resolve(true)
+    }
+
+    script.src = `${origin}/gtag/js?id=${firstTrackingId}`
+
     head.appendChild(link)
     head.appendChild(link2)
+    head.appendChild(script)
+  })
+}
+
+exports.initializeGoogleTag = (options) => {
+  if (
+    !window.gatsbyPluginGDPRCookiesGoogleTagInitialized &&
+    getCookie(options.cookieName) === `true` &&
+    validGTrackingId(options)
+  ) {
+    const gtagConfig = options.gtagConfig || {}
+    const pluginConfig = options.pluginConfig || {}
 
     // Prevent duplicate or excluded pageview events being emitted on initial load of page by the `config` command
     // https://developers.google.com/analytics/devguides/collection/gtagjs/#disable_pageview_tracking
 
     gtagConfig.send_page_view = false
 
-    const firstTrackingId =
-      options.trackingIds && options.trackingIds.length
-        ? options.trackingIds[0]
-        : ``
-
     const excludeGtagPaths = []
+
+    // (function(){
     if (typeof pluginConfig.exclude !== `undefined`) {
       pluginConfig.exclude.map((exclude) => {
         const mm = new Minimatch(exclude)
         excludeGtagPaths.push(mm.makeRe())
       })
     }
+
+    const firstTrackingId =
+      options.trackingIds && options.trackingIds.length
+        ? options.trackingIds[0]
+        : ``
 
     const renderHtml = () => `
       ${
@@ -62,34 +90,30 @@ exports.addGoogleTag = (options) => {
           : `true`
       }) {
         window.dataLayer = window.dataLayer || [];
-        function gtag(){window.dataLayer && window.dataLayer.push(arguments);}
-        gtag('js', new Date());
+        window.gtag = function(){window.dataLayer && window.dataLayer.push(arguments);}
+        window.gtag('js', new Date());
         ${options.trackingIds
           .map(
             (trackingId) =>
-              `gtag('config', '${trackingId}', ${JSON.stringify(gtagConfig)});`
+              `window.gtag('config', '${trackingId}', ${JSON.stringify(
+                gtagConfig
+              )});`
           )
           .join(``)}
       }
       `
 
     const script = document.createElement(`script`)
-    script.key = `gatsby-plugin-google-gtag`
-    script.async = true
-
-    script.onload = () => {
-      window.gatsbyPluginGDPRCookiesGoogleTagAdded = true
-      resolve(true)
-    }
-
-    script.src = `${origin}/gtag/js?id=${firstTrackingId}`
-
+    script.key = `gatsby-plugin-google-gtag-config`
+    script.innerHTML = renderHtml()
+    const head = document.getElementsByTagName(`head`)[0]
     head.appendChild(script)
-    renderHtml()
-  })
+
+    window.gatsbyPluginGDPRCookiesGoogleTagInitialized = true
+  }
 }
 
-exports.initializeGoogleTag = (options) => {
+exports.trackGoogleTag = (options, location) => {
   if (
     !window.gatsbyPluginGDPRCookiesGoogleTagInitialized &&
     getCookie(options.cookieName) === `true` &&
@@ -120,7 +144,5 @@ exports.initializeGoogleTag = (options) => {
       setTimeout(sendPageView, 32)
     }
     // })();
-
-    window.gatsbyPluginGDPRCookiesGoogleTagInitialized = true
   }
 }

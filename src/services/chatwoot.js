@@ -1,7 +1,4 @@
-const {
-  validChatwootConfig,
-  getCookie
-} = require('../helper')
+const { validChatwootConfig, getCookie } = require(`../helper`)
 
 exports.addChatwoot = (options) => {
   return new Promise((resolve, reject) => {
