@@ -6,6 +6,7 @@ const {
   validHotjarId,
   validChatwootConfig,
   validLinkedinTrackingId,
+  validHubspotTrackingId,
   getCookie
 } = require('../helper')
 
@@ -47,6 +48,11 @@ const {
   addLinkedin,
   initializeLinkedin
 } = require('./linkedin')
+
+const {
+  addHubspot,
+  initializeHubspot
+} = require('./hubspot')
 
 exports.initializeAndTrackGoogleAnalytics = (options, location) => {
   if (
@@ -144,6 +150,19 @@ exports.initializeChatwoot = (options) => {
     addChatwoot(options).then((status) => {
       if (status) {
         console.info('Chat is added and running')
+      }
+    })
+  }
+}
+
+exports.initializeHubspot = (options) => {
+  if (
+    getCookie(options.cookieName) === `true` &&
+    validHubspotTrackingId(options)
+  ) {
+    addHubspot(options).then((status) => {
+      if (status) {
+        initializeHubspot(options)
       }
     })
   }

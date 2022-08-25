@@ -28,7 +28,11 @@ exports.validChatwootConfig = options =>
 
 exports.validLinkedinTrackingId = options =>
   options.trackingId &&
-  options.trackingId.trim() !== ``  
+  options.trackingId.trim() !== ``
+
+exports.validHubspotTrackingId = options =>
+  options.trackingId &&
+  options.trackingId.trim() !== ``
 
 exports.getCookie = name => {
   var v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
