@@ -7,7 +7,8 @@ const {
   validChatwootConfig,
   validLinkedinTrackingId,
   validHubspotTrackingId,
-  getCookie
+  getCookie,
+  validGTrackingId
 } = require('../helper')
 
 const {
@@ -53,6 +54,8 @@ const {
   addHubspot,
   initializeHubspot
 } = require('./hubspot')
+
+const { addGoogleTag, initializeGoogleTag } = require('./google-tag');
 
 exports.initializeAndTrackGoogleAnalytics = (options, location) => {
   if (
@@ -163,6 +166,19 @@ exports.initializeHubspot = (options) => {
     addHubspot(options).then((status) => {
       if (status) {
         initializeHubspot(options)
+      }
+    })
+  }
+}
+
+exports.initializeGoogleTag = (options) => {
+  if (
+    getCookie(options.cookieName) === `true` &&
+    validGTrackingId(options)
+  ) {
+    addGoogleTag(options).then((status) => {
+      if (status) {
+        initializeGoogleTag(options)
       }
     })
   }

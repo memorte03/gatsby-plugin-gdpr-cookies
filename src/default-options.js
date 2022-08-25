@@ -27,5 +27,8 @@ export const defaultOptions = {
   },
   hubspot: {
     cookieName: 'gatsby-gpdr-hubspot'
+  },
+  googleTag: {
+    cookieName: 'gatsby-gpdr-google-tag'
   }
 }

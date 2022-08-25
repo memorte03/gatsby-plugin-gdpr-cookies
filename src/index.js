@@ -7,6 +7,7 @@ const {
   initializeChatwoot,
   initializeLinkedin,
   initializeHubspot,
+  initializeGoogleTag,
 } = require('./services')
 
 const { isEnvironmentValid } = require('./helper')
@@ -26,6 +27,7 @@ exports.initializeAndTrack = (location) => {
       initializeChatwoot(options.chatwoot)
       initializeLinkedin(options.linkedin)
       initializeHubspot(options.hubspot)
+      initializeGoogleTag(options.googleTag, location)
     }
   }
 }
