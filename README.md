@@ -1,5 +1,14 @@
 # gatsby-plugin-gdpr-cookies
 
+---
+
+## 💡 This is a fork from [Andre Zimpel's `gatsby-plugin-gdpr-cookies` Gatsby plugin](https://github.com/andrezimpel/gatsby-plugin-gdpr-cookies).
+Added:
+* `googleTag` based on [gatsby-plugin-google-tag](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-plugin-google-gtag)
+* `hubspot` based on [gatsby-plugin-hubspot](https://github.com/hutsoninc/gatsby-plugin-hubspot)
+
+---
+
 Gatsby plugin to add Google Analytics (V4 is supported), Google Tag Manager, Facebook Pixel, TikTok Pixel and Hotjar in a GDPR form to your site.
 
 **Version 2:** I did rewrite the whole plugin to remove all the ssr that was done before. This will ensure that no data is ever sent before the cookies are set to true and the plugin has been initialized. There are **no breaking changes**. The configuration is exactly the same and and `initializeAndTrack(location)` does still work as before. I also removed some dependencies to keep the bundle size as small as possible.
