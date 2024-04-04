@@ -1,3 +1,5 @@
+const { GOOGLE_CONSENT_TAGS } = require("./constants")
+
 exports.validGATrackingId = options =>
   options.trackingId &&
   options.trackingId.trim() !== ``
@@ -45,4 +47,49 @@ exports.getCookie = name => {
 exports.isEnvironmentValid = (environments) => {
   const currentEnvironment = process.env.ENV || process.env.NODE_ENV || `development`
   return environments.includes(currentEnvironment)
+}
+
+exports.getGoogleConsentFromCookie = (consentOptions) => {
+  return GOOGLE_CONSENT_TAGS.reduce((acc, tag) => {
+    const camelCaseTag = tag.replace(/_(\w)/g, (_, p1) => p1.toUpperCase())
+
+    const cookieName = consentOptions[camelCaseTag];
+    const value = exports.getCookie(cookieName) === `true` ? `granted` : `denied`;
+    acc[tag] = value;
+
+    return acc;
+  }, {})
+}
+
+exports.setGoogleConsent = (consentOptions) => {
+  if (typeof window.gtag === `function` && window.googleConsentInitialized !== true) {
+    window.gtag("consent", "default", {
+      ...exports.getGoogleConsentFromCookie(consentOptions),
+      security_storage: "granted",
+      wait_for_update: consentOptions.waitForUpdate,
+    });
+    window.googleConsentInitialized = true;
+  }
+}
+
+exports.initializeGTagJS = (consentOptions) => {
+  if(!window.dataLayer) {
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () {
+      window.dataLayer.push(arguments);
+    }
+    window.gtag(`js`, new Date())
+    exports.setGoogleConsent(consentOptions);
+  }
+}
+
+exports.getDefaultConsentTagOptions = () => {
+  return GOOGLE_CONSENT_TAGS.reduce((acc, tag) => {
+    const kebabCaseTag = tag.replace(/_/g, `-`)
+    const camelCaseTag = tag.replace(/_(\w)/g, (_, p1) => p1.toUpperCase())
+
+    acc[camelCaseTag] = `gatsby-gdpr-google-${kebabCaseTag}`
+
+    return acc
+  }, {})
 }

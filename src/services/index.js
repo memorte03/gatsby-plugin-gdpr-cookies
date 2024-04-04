@@ -61,23 +61,21 @@ const {
   trackGoogleTag
 } = require('./google-tag');
 
-exports.initializeAndTrackGoogleAnalytics = (options, location) => {
+exports.initializeAndTrackGoogleAnalytics = (options, consentOptions, location) => {
   if (
-    getCookie(options.cookieName) === `true` &&
     validGATrackingId(options)
   ) {
     addGoogleAnalytics(options).then((status) => {
       if (status) {
-        initializeGoogleAnalytics(options)
+        initializeGoogleAnalytics(options, consentOptions)
         trackGoogleAnalytics(options, location)
       }
     })
   }
 }
 
-exports.initializeAndTrackGoogleTagManager = (options, location) => {
+exports.initializeAndTrackGoogleTagManager = (options, consentOptions, location) => {
   if (
-    getCookie(options.cookieName) === `true` &&
     validGTMTrackingId(options)
   ) {
     let environmentParamStr = ``
@@ -87,8 +85,21 @@ exports.initializeAndTrackGoogleTagManager = (options, location) => {
 
     addGoogleTagManager(options, environmentParamStr).then((status) => {
       if (status) {
-        initializeGoogleTagManager(options)
+        initializeGoogleTagManager(options, consentOptions)
         trackGoogleTagManager(options, location)
+      }
+    })
+  }
+}
+
+exports.initializeGoogleTag = (options, consentOptions, location) => {
+  if (
+    validGTrackingId(options)
+  ) {
+    addGoogleTag(options).then((status) => {
+      if (status) {
+        initializeGoogleTag(options, consentOptions)
+        trackGoogleTag(options, location)
       }
     })
   }
@@ -170,20 +181,6 @@ exports.initializeHubspot = (options) => {
     addHubspot(options).then((status) => {
       if (status) {
         initializeHubspot(options)
-      }
-    })
-  }
-}
-
-exports.initializeGoogleTag = (options, location) => {
-  if (
-    getCookie(options.cookieName) === `true` &&
-    validGTrackingId(options)
-  ) {
-    addGoogleTag(options).then((status) => {
-      if (status) {
-        initializeGoogleTag(options)
-        trackGoogleTag(options, location)
       }
     })
   }

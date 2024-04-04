@@ -1,4 +1,4 @@
-const { validGTrackingId, getCookie } = require(`../helper`)
+const { validGTrackingId, getCookie, initializeGTagJS } = require(`../helper`)
 import { Minimatch } from "minimatch"
 
 exports.addGoogleTag = (options) => {
@@ -43,7 +43,7 @@ exports.addGoogleTag = (options) => {
   })
 }
 
-exports.initializeGoogleTag = (options) => {
+exports.initializeGoogleTag = (options, consentOptions) => {
   if (
     !window.gatsbyPluginGDPRCookiesGoogleTagInitialized &&
     getCookie(options.cookieName) === `true` &&
@@ -73,33 +73,28 @@ exports.initializeGoogleTag = (options) => {
         : ``
 
     const renderHtml = () => `
-      ${
-        excludeGtagPaths.length
-          ? `window.excludeGtagPaths=[${excludeGtagPaths.join(`,`)}];`
-          : ``
+      ${excludeGtagPaths.length
+        ? `window.excludeGtagPaths=[${excludeGtagPaths.join(`,`)}];`
+        : ``
       }
-      ${
-        typeof gtagConfig.anonymize_ip !== `undefined` &&
+      ${typeof gtagConfig.anonymize_ip !== `undefined` &&
         gtagConfig.anonymize_ip === true
-          ? `function gaOptout(){document.cookie=disableStr+'=true; expires=Thu, 31 Dec 2099 23:59:59 UTC;path=/',window[disableStr]=!0}var gaProperty='${firstTrackingId}',disableStr='ga-disable-'+gaProperty;document.cookie.indexOf(disableStr+'=true')>-1&&(window[disableStr]=!0);`
-          : ``
+        ? `function gaOptout(){document.cookie=disableStr+'=true; expires=Thu, 31 Dec 2099 23:59:59 UTC;path=/',window[disableStr]=!0}var gaProperty='${firstTrackingId}',disableStr='ga-disable-'+gaProperty;document.cookie.indexOf(disableStr+'=true')>-1&&(window[disableStr]=!0);`
+        : ``
       }
-      if(${
-        pluginConfig.respectDNT
-          ? `!(navigator.doNotTrack == "1" || window.doNotTrack == "1")`
-          : `true`
+      if(${pluginConfig.respectDNT
+        ? `!(navigator.doNotTrack == "1" || window.doNotTrack == "1")`
+        : `true`
       }) {
-        window.dataLayer = window.dataLayer || [];
-        window.gtag = function(){window.dataLayer && window.dataLayer.push(arguments);}
-        window.gtag('js', new Date());
+        ${initializeGTagJS(consentOptions)}
         ${options.trackingIds
-          .map(
-            (trackingId) =>
-              `window.gtag('config', '${trackingId}', ${JSON.stringify(
-                gtagConfig
-              )});`
-          )
-          .join(``)}
+        .map(
+          (trackingId) =>
+            `window.gtag('config', '${trackingId}', ${JSON.stringify(
+              gtagConfig
+            )});`
+        )
+        .join(``)}
       }
       `
 
