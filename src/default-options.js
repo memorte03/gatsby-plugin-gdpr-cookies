@@ -1,10 +1,10 @@
-import { getDefaultConsentTagOptions } from "./helper";
+import { getDefaultConsentTagOptions } from "./helper"
 
 export const defaultOptions = {
   environments: [`production`],
   googleConsent: {
     cookieNames: getDefaultConsentTagOptions(),
-    waitForUpdate: 500
+    waitForUpdate: 500,
   },
   googleAnalytics: {
     anonymize: true,

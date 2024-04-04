@@ -22,7 +22,6 @@ exports.initializeGoogleAnalytics = (options, consentOptions) => {
     !window.gatsbyPluginGDPRCookiesGoogleAnalyticsInitialized &&
     validGATrackingId(options)
   ) {
-
     initializeGTagJS(consentOptions)
 
     let gaAnonymize = options.anonymize

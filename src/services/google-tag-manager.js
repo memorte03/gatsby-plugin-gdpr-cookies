@@ -45,8 +45,8 @@ exports.addGoogleTagManager = (
 
 exports.initializeGoogleTagManager = (options, consentOptions) => {
   if (
-    !window.gatsbyPluginGDPRCookiesGoogleTagManagerInitialized
-    && validGTMTrackingId(options)
+    !window.gatsbyPluginGDPRCookiesGoogleTagManagerInitialized &&
+    validGTMTrackingId(options)
   ) {
     initializeGTagJS(consentOptions)
 
@@ -64,10 +64,7 @@ exports.initializeGoogleTagManager = (options, consentOptions) => {
 }
 
 exports.trackGoogleTagManager = (options, location) => {
-  if (
-    validGTMTrackingId(options) &&
-    typeof window.gtag === `function`
-  ) {
+  if (validGTMTrackingId(options) && typeof window.gtag === `function`) {
     const pagePath = location
       ? location.pathname + location.search + location.hash
       : undefined
