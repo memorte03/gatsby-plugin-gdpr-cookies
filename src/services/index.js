@@ -55,7 +55,6 @@ exports.initializeAndTrackGoogleAnalytics = (
   location
 ) => {
   if (validGATrackingId(options)) {
-    console.log(`initializeGoogleAnalytics`)
     addGoogleAnalytics(options).then((status) => {
       if (status) {
         initializeGoogleAnalytics(options, consentOptions)
@@ -71,7 +70,6 @@ exports.initializeAndTrackGoogleTagManager = (
   location
 ) => {
   if (validGTMTrackingId(options)) {
-    console.log(`initializeGoogleTagManager`)
     let environmentParamStr = ``
     if (options.gtmAuth && options.gtmPreview) {
       environmentParamStr = `&gtm_auth=${options.gtmAuth}&gtm_preview=${options.gtmPreview}&gtm_cookies_win=x`
@@ -90,7 +88,6 @@ exports.initializeGoogleTag = (options, consentOptions, location) => {
   if (validGTrackingId(options)) {
     addGoogleTag(options).then((status) => {
       if (status) {
-        console.log(`initializeGoogleTag`)
         initializeGoogleTag(options, consentOptions)
         trackGoogleTag(options, location)
       }
